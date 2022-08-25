@@ -1,65 +1,66 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Application.Interfaces;
+﻿using Application.Interfaces;
+using Domain.Entities;
 using Entities;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using System.Data.Entity.Infrastructure;
 
 namespace Api.Controllers
 {
     [ApiController]
-    [Route("v1/pessoas")]
-    public class PessoaController : ControllerBase
+    [Route("v1/cidade")]
+    public class CidadeController : ControllerBase
     {
-        private readonly INterfacePessoa _service;
-        public PessoaController(INterfacePessoa service)
+        private readonly INterfaceCidade _service;
+        public CidadeController(INterfaceCidade service)
         {
             _service = service;
         }
-       
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pessoa>>> Get()
+        public async Task<ActionResult<IEnumerable<Cidade>>> Get()
         {
-            var pessoas = await _service.GetAll();
-            if (pessoas == null)
+            var model = await _service.GetAll();
+            if (model == null)
             {
                 return BadRequest();
             }
-            return Ok(pessoas.ToList());
+            return Ok(model.ToList());
         }
-       
+
         [HttpGet]
         [Route("GetById")]
-        public async Task<ActionResult<Pessoa>> GetById(int Id)
+        public async Task<ActionResult<Cidade>> GetById(int Id)
         {
-            var pessoas = await _service.GetById(Id);
-            if (pessoas == null)
+            var model = await _service.GetById(Id);
+            if (model == null)
             {
                 return NotFound("Pessoa não encontrada pelo id informado");
             }
-            return Ok(pessoas);
+            return Ok(model);
         }
-        
+
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Pessoa pessoas)
+        public async Task<IActionResult> Post([FromBody] Cidade model)
         {
-            if (pessoas == null)
+            if (model == null)
             {
                 return BadRequest("pessoa é null");
             }
-            await _service.Add(pessoas);
-            return CreatedAtAction(nameof(Get), new { Id = pessoas.Id }, pessoas);
+            await _service.Add(model);
+            return CreatedAtAction(nameof(Get), new { Id = model.Id }, model);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Pessoa pessoas)
+        public async Task<IActionResult> Put([FromBody] Cidade model)
         {
-            if (pessoas.Id==0)
+            if (model.Id == 0)
             {
                 return BadRequest($"O código da pessoa não pode ser zero.");
             }
             try
             {
-                var pessoa = await _service.GetById(pessoas.Id);
-                pessoa = pessoas;
+                var pessoa = await _service.GetById(model.Id);
+                pessoa = model;
                 await _service.Update(pessoa);
             }
             catch (DbUpdateConcurrencyException)
@@ -70,15 +71,15 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Pessoa>> Delete(int id)
+        public async Task<ActionResult<Cidade>> Delete(int id)
         {
-            var pessoa = await _service.GetById(id);
-            if (pessoa == null)
+            var model = await _service.GetById(id);
+            if (model == null)
             {
                 return NotFound($"Pessoa com id {id} não foi encontrado");
             }
-            await _service.Delete(pessoa);
-            return Ok(pessoa);
+            await _service.Delete(model);
+            return Ok(model);
         }
 
 

@@ -8,10 +8,10 @@ namespace Application.Interfaces.Generic
 {
     public interface INterfaceGenericApp<T> where T : class
     {
-        Task<int> Add(T Objeto);
-        Task<int> Update(T Objeto);
+        Task<int> Add(T model);
+        Task<int> Update(T model);
 
-        Task<int> Delete(T Objeto);
+        Task<int> Delete(T model);
 
         Task<T> GetById(int id);
 

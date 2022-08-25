@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using Domain.Entities;
+using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -23,9 +24,12 @@ namespace Data.Configuration
 
         public DbSet<Pessoa> Pessoa { get; set; }
 
+        public DbSet<Cidade> Cidade { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Pessoa>().HasKey(m => m.Id);
+            builder.Entity<Cidade>().HasKey(m => m.Id);
             base.OnModelCreating(builder);
         }
 

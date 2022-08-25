@@ -26,10 +26,13 @@ namespace Api
             services.AddDbContext<DbContext>(opt => opt.UseInMemoryDatabase("StefaniniDb"));
             services.AddScoped<Data.Configuration.Context, Data.Configuration.Context>();
 
-
             services.AddSingleton(typeof(IGeneric<>), typeof(RepositoryGenerics<>));
             services.AddSingleton<IPessoa, PessoaRepository>();
             services.AddSingleton<INterfacePessoa, PessoaServices>();
+
+            services.AddSingleton(typeof(IGeneric<>), typeof(RepositoryGenerics<>));
+            services.AddSingleton<ICidade, CidadeRepository>();
+            services.AddSingleton<INterfaceCidade, CidadeServices>();
 
             services.AddControllers();
 
@@ -45,7 +48,7 @@ namespace Api
                         Contact = new Microsoft.OpenApi.Models.OpenApiContact
                         {
                             Name = "Vitorino Neto",
-                            Url = new Uri("https://github.com/vitorinomenezes", UriKind.Absolute)
+                            Url = new Uri("https://github.com/vitorinomenezes/Teste_Stefanini_2022", UriKind.Absolute)
                         }
                     });
 
